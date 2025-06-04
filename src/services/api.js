@@ -1,5 +1,5 @@
 // Configuration de base pour les requêtes API
-const API_URL = 'http://185.98.139.128:40140' // URL de votre API basée sur votre fichier server.js
+const API_URL = 'http://localhost:5001/' // URL de votre API basée sur votre fichier server.js
 
 /**
  * Service pour gérer les requêtes API
