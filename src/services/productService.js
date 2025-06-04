@@ -1,4 +1,4 @@
-import apiService from './api';
+import apiService from './api'
 
 /**
  * Service pour gérer les requêtes liées aux produits
@@ -9,7 +9,7 @@ const productService = {
    * @returns {Promise} - Promesse contenant la liste des produits
    */
   getAllProducts() {
-    return apiService.get('/products');
+    return apiService.get('/products')
   },
 
   /**
@@ -18,7 +18,7 @@ const productService = {
    * @returns {Promise} - Promesse contenant les détails du produit
    */
   getProductById(id) {
-    return apiService.get(`/products/${id}`);
+    return apiService.get(`/products/${id}`)
   },
 
   /**
@@ -27,8 +27,27 @@ const productService = {
    * @returns {Promise} - Promesse contenant les produits de la catégorie
    */
   getProductsByCategory(category) {
-    return apiService.get(`/products/category/${category}`);
-  }
-};
+    return apiService.get(`/products/category/${category}`)
+  },
 
-export default productService; 
+  /**
+   * Récupère toutes les catégories disponibles
+   * @returns {Promise} - Promesse contenant la liste des catégories
+   */
+  getCategories() {
+    return apiService.get('/products/categories')
+  },
+
+  /**
+   * Ajoute un nouveau produit
+   * @param {Object} productData - Données du produit à ajouter
+   * @returns {Promise} - Promesse contenant le produit ajouté
+   */
+  addProduct(productData) {
+    return apiService.post('/products', productData)
+  },
+
+  /** */
+}
+
+export default productService

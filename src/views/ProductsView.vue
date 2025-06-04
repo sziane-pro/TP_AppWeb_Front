@@ -31,7 +31,12 @@ export default {
 
 <template>
   <div class="products-container">
-    <h1>Produits</h1>
+    <div class="header-container">
+      <h1>Produits</h1>
+      <router-link to="/products/add" class="add-product-button">
+        Ajouter un produit
+      </router-link>
+    </div>
     
     <div v-if="loading" class="loading">
       Chargement des produits...
@@ -63,6 +68,28 @@ export default {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.add-product-button {
+  display: inline-block;
+  background-color: #42b983;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.add-product-button:hover {
+  background-color: #3aa876;
 }
 
 .loading, .error, .no-products {
