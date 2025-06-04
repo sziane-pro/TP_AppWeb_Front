@@ -1,5 +1,5 @@
 // Configuration de base pour les requêtes API
-const API_URL = 'http://localhost:5001'; // URL de votre API basée sur votre fichier server.js
+const API_URL = 'http://185.98.139.128:40140' // URL de votre API basée sur votre fichier server.js
 
 /**
  * Service pour gérer les requêtes API
@@ -11,11 +11,11 @@ const apiService = {
    * @returns {Promise} - Promesse contenant les données de la réponse
    */
   async get(endpoint) {
-    const response = await fetch(`${API_URL}${endpoint}`);
+    const response = await fetch(`${API_URL}${endpoint}`)
     if (!response.ok) {
-      throw new Error(`Erreur API: ${response.status}`);
+      throw new Error(`Erreur API: ${response.status}`)
     }
-    return response.json();
+    return response.json()
   },
 
   /**
@@ -28,14 +28,14 @@ const apiService = {
     const response = await fetch(`${API_URL}${endpoint}`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data)
-    });
+      body: JSON.stringify(data),
+    })
     if (!response.ok) {
-      throw new Error(`Erreur API: ${response.status}`);
+      throw new Error(`Erreur API: ${response.status}`)
     }
-    return response.json();
+    return response.json()
   },
 
   /**
@@ -48,14 +48,14 @@ const apiService = {
     const response = await fetch(`${API_URL}${endpoint}`, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data)
-    });
+      body: JSON.stringify(data),
+    })
     if (!response.ok) {
-      throw new Error(`Erreur API: ${response.status}`);
+      throw new Error(`Erreur API: ${response.status}`)
     }
-    return response.json();
+    return response.json()
   },
 
   /**
@@ -65,13 +65,13 @@ const apiService = {
    */
   async delete(endpoint) {
     const response = await fetch(`${API_URL}${endpoint}`, {
-      method: 'DELETE'
-    });
+      method: 'DELETE',
+    })
     if (!response.ok) {
-      throw new Error(`Erreur API: ${response.status}`);
+      throw new Error(`Erreur API: ${response.status}`)
     }
-    return response.json();
-  }
-};
+    return response.json()
+  },
+}
 
-export default apiService; 
+export default apiService
