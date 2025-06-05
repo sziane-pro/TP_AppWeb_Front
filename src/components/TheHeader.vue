@@ -7,8 +7,10 @@ import Navbar from './layout/Navbar.vue'
     <div class="max-w-8xl mx-auto px-6 h-[80px] flex justify-between items-center">
       <div class="logo transform hover:scale-105 transition-transform duration-300">
         <router-link to="/" class="no-underline">
-          <h1 class="m-0 text-3xl font-extrabold bg-gradient-to-r from-[#42b983] to-[#2c7d5d] bg-clip-text text-transparent">
-            Ma Boutique
+          <h1
+            class="m-0 text-3xl font-extrabold bg-gradient-to-r from-[#42b983] to-[#2c7d5d] bg-clip-text text-transparent"
+          >
+            Mon app boutique
           </h1>
         </router-link>
       </div>
