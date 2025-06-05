@@ -1,14 +1,48 @@
-name: Deploy Vue App to VPS via SSH and Git Pull
+name: CI + Merge + Deploy
 
 on:
   push:
     branches:
-      - main # ou la branche que tu veux déployer
+      - dev
 
 jobs:
-  deploy:
-    name: Deploy to VPS
+  test_and_merge:
+    name: Test & Merge to main
     runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run tests
+        run: pnpm run test
+
+      - name: Merge dev → main
+        if: success()
+        uses: devmasx/merge-branch@v1.4.0
+        with:
+          type: now
+          from_branch: dev
+          target_branch: main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy:
+    name: Deploy to VPS (production)
+    needs: test_and_merge
+    runs-on: ubuntu-latest
+    if: ${{ success() }}
 
     steps:
       - name: Checkout repository
@@ -22,7 +56,10 @@ jobs:
           key: ${{ secrets.VPS_KEY }}
           port: 22
           script: |
-            cd /var/www/front-vue
+            cd /var/tmp/front-vue
             git pull origin main
             pnpm install
+            rm -rf dist/
             pnpm build
+            mv dist/ /var/www/front-vue/
+            rm -rf /var/tmp/front-vue
