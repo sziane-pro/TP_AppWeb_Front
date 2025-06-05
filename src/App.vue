@@ -4,20 +4,27 @@ import TheHeader from './components/TheHeader.vue'
 </script>
 
 <template>
-  <TheHeader />
-  <main class="main-content">
-    <RouterView />
-  </main>
+  <div class="min-h-screen bg-gray-50">
+    <TheHeader />
+    <main class="main-content">
+      <router-view />
+    </main>
+  </div>
 </template>
 
 <style>
-/* Styles globaux */
+/* Styles de base */
 body {
   margin: 0;
-  padding: 0;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  color: #333;
-  background-color: #f8f8f8;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .main-content {
