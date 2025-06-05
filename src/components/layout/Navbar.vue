@@ -12,14 +12,19 @@ const handleLogout = () => {
   authStore.logout()
   router.push('/login')
 }
+
+// Définir le nom du composant comme multi-mot pour ESLint
+defineOptions({
+  name: 'NavBar',
+})
 </script>
 
 <template>
   <nav class="flex items-center gap-8">
     <ul class="flex items-center gap-6">
       <li>
-        <router-link 
-          to="/" 
+        <router-link
+          to="/"
           class="text-gray-700 no-underline font-medium py-2 px-3 rounded-lg transition-all duration-300 hover:bg-gray-50"
           :class="{ 'text-[#42b983] font-semibold': $route.path === '/' }"
         >
@@ -27,8 +32,8 @@ const handleLogout = () => {
         </router-link>
       </li>
       <li v-if="isAuthenticated">
-        <router-link 
-          to="/products" 
+        <router-link
+          to="/products"
           class="text-gray-700 no-underline font-medium py-2 px-3 rounded-lg transition-all duration-300 hover:bg-gray-50"
           :class="{ 'text-[#42b983] font-semibold': $route.path === '/products' }"
         >
@@ -56,4 +61,4 @@ const handleLogout = () => {
       </template>
     </div>
   </nav>
-</template> 
+</template>

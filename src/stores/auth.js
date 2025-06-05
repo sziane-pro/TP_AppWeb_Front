@@ -2,8 +2,6 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import apiService from '@/services/api'
 
-const API_URL = 'http://185.98.139.128:40140'
-
 export const useAuthStore = defineStore('auth', () => {
   const token = ref(localStorage.getItem('token') || null)
   const user = ref(() => {
@@ -39,7 +37,7 @@ export const useAuthStore = defineStore('auth', () => {
       const username = credentials.email.split('@')[0]
       const data = await apiService.post('/auth/login', {
         username: username,
-        password: credentials.password
+        password: credentials.password,
       })
 
       if (!data.token) {
@@ -62,7 +60,7 @@ export const useAuthStore = defineStore('auth', () => {
       }
 
       const username = userData.email.split('@')[0]
-      const data = await apiService.post('/users', {
+      await apiService.post('/users', {
         email: userData.email,
         username: username,
         password: userData.password,
@@ -74,18 +72,18 @@ export const useAuthStore = defineStore('auth', () => {
         zipcode: '',
         lat: '',
         long: '',
-        phone: ''
+        phone: '',
       })
 
       // Après l'inscription, on connecte automatiquement l'utilisateur
       const loginData = await login({
         email: userData.email,
-        password: userData.password
+        password: userData.password,
       })
 
       return loginData
     } catch (error) {
-      console.error('Erreur lors de l\'inscription:', error)
+      console.error("Erreur lors de l'inscription:", error)
       throw error
     }
   }
@@ -103,6 +101,6 @@ export const useAuthStore = defineStore('auth', () => {
     isAuthenticated,
     login,
     register,
-    logout
+    logout,
   }
 })
