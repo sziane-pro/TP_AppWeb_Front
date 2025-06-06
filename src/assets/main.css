@@ -6,3 +6,7 @@
   font-weight: normal;
   font-family: 'Poppins', sans-serif;
 }
+
+.m-0-auto{
+  margin: 0 auto;
+}

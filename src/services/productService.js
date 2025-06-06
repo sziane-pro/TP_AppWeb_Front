@@ -47,7 +47,24 @@ const productService = {
     return apiService.post('/products', productData)
   },
 
-  /** */
+  /**
+   * Met à jour un produit existant
+   * @param {string|number} id - ID du produit à modifier
+   * @param {Object} productData - Nouvelles données du produit
+   * @returns {Promise} - Promesse contenant le produit modifié
+   */
+  updateProduct(id, productData) {
+    return apiService.put(`/products/${id}`, productData)
+  },
+
+  /**
+   * Supprime un produit
+   * @param {string|number} id - ID du produit à supprimer
+   * @returns {Promise} - Promesse contenant la confirmation de suppression
+   */
+  deleteProduct(id) {
+    return apiService.delete(`/products/${id}`)
+  }
 }
 
 export default productService

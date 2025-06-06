@@ -16,55 +16,29 @@ export default {
 </script>
 
 <template>
-  <div class="add-product-view">
-    <h1>Ajouter un produit</h1>
-    <p class="description">
-      Utilisez le formulaire ci-dessous pour ajouter un nouveau produit à la boutique.
-    </p>
+  <div class="max-w-4xl mx-auto px-4 py-8">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-3">Ajouter un produit</h1>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+        Utilisez le formulaire ci-dessous pour ajouter un nouveau produit à la boutique.
+      </p>
+    </div>
     
+    <!-- Formulaire -->
     <ProductForm @product-added="handleProductAdded" />
     
-    <div class="navigation-links">
-      <router-link to="/products" class="back-link">
+    <!-- Navigation -->
+    <div class="text-center mt-8">
+      <router-link 
+        to="/products" 
+        class="inline-flex items-center px-4 py-2 text-emerald-600 font-medium hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition-all duration-200"
+      >
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
         Retour à la liste des produits
       </router-link>
     </div>
   </div>
-</template>
-
-<style scoped>
-.add-product-view {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-h1 {
-  text-align: center;
-  margin-bottom: 10px;
-}
-
-.description {
-  text-align: center;
-  color: #666;
-  margin-bottom: 30px;
-}
-
-.navigation-links {
-  margin-top: 30px;
-  text-align: center;
-}
-
-.back-link {
-  display: inline-block;
-  color: #42b983;
-  text-decoration: none;
-  font-weight: bold;
-  transition: color 0.3s ease;
-}
-
-.back-link:hover {
-  color: #3aa876;
-  text-decoration: underline;
-}
-</style> 
+</template> 
