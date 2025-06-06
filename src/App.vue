@@ -1,14 +1,18 @@
 <script setup>
 import { RouterView } from 'vue-router'
 import TheHeader from './components/TheHeader.vue'
+import Footer from './components/layout/Footer.vue'
+// Vérifier si on est en mode développement
+const isDevelopment = import.meta.env.DEV
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-gray-50 flex flex-col">
     <TheHeader />
-    <main class="main-content">
+    <main class="flex-1">
       <router-view />
     </main>
+    <Footer />
   </div>
 </template>
 
@@ -27,9 +31,10 @@ body {
   flex-direction: column;
 }
 
-.main-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+/* Layout principal avec footer sticky */
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 </style>

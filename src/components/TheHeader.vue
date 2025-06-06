@@ -4,13 +4,12 @@ import Navbar from './layout/Navbar.vue'
 
 <template>
   <header class="bg-white shadow-lg sticky top-0 z-50 transition-all duration-300">
-    <div class="max-w-8xl mx-auto px-6 h-[80px] flex justify-between items-center">
-      <div class="logo transform hover:scale-105 transition-transform duration-300">
+    <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 h-[80px] flex justify-between items-center">
+      <div class="logo transform hover:scale-105 transition-transform duration-300 flex-shrink-0">
         <router-link to="/" class="no-underline">
-          <h1
-            class="m-0 text-3xl font-extrabold bg-gradient-to-r from-[#42b983] to-[#2c7d5d] bg-clip-text text-transparent"
-          >
-            Mon app boutique
+          <h1 class="m-0 text-xl sm:text-2xl lg:text-3xl font-extrabold text-emerald-600 truncate">
+            <span class="hidden sm:inline">ProductManager</span>
+            <span class="sm:hidden">Ma boutique</span>
           </h1>
         </router-link>
       </div>

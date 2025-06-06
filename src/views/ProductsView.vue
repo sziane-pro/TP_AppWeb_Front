@@ -21,6 +21,23 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+
+    editProduct(productId) {
+      this.$router.push(`/products/edit/${productId}`);
+    },
+
+    async deleteProduct(product) {
+      if (confirm(`Êtes-vous sûr de vouloir supprimer le produit "${product.title}" ?`)) {
+        try {
+          await productService.deleteProduct(product.id);
+          // Recharger la liste des produits après suppression
+          await this.loadProducts();
+        } catch (err) {
+          this.error = err.message || 'Erreur lors de la suppression du produit';
+          console.error('Erreur lors de la suppression du produit:', err);
+        }
+      }
     }
   },
   mounted() {
@@ -30,129 +47,108 @@ export default {
 </script>
 
 <template>
-  <div class="products-container">
-    <div class="header-container">
-      <h1>Produits</h1>
-      <router-link to="/products/add" class="add-product-button">
+  <div class="max-w-8xl mx-auto px-4 py-8">
+    <!-- Header avec titre et bouton d'ajout -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-4 sm:mb-0">Produits</h1>
+      <router-link 
+        to="/products/add" 
+        class="inline-flex items-center px-6 py-3 bg-emerald-600 text-white font-medium rounded-lg hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition-all duration-200 shadow-sm"
+      >
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+        </svg>
         Ajouter un produit
       </router-link>
     </div>
     
-    <div v-if="loading" class="loading">
-      Chargement des produits...
+    <!-- État de chargement -->
+    <div v-if="loading" class="flex items-center justify-center py-12">
+      <div class="flex items-center space-x-3">
+        <svg class="animate-spin h-6 w-6 text-emerald-600" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span class="text-lg text-gray-600">Chargement des produits...</span>
+      </div>
     </div>
     
-    <div v-else-if="error" class="error">
-      {{ error }}
+    <!-- Message d'erreur -->
+    <div v-else-if="error" class="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+      <svg class="w-12 h-12 text-red-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.864-.833-2.634 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+      </svg>
+      <p class="text-red-800 text-lg font-medium">{{ error }}</p>
     </div>
     
-    <div v-else-if="products.length === 0" class="no-products">
-      Aucun produit disponible.
+    <!-- Aucun produit -->
+    <div v-else-if="products.length === 0" class="text-center py-12">
+      <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+      </svg>
+      <h3 class="text-xl font-medium text-gray-900 mb-2">Aucun produit disponible</h3>
+      <p class="text-gray-600 mb-6">Commencez par ajouter votre premier produit.</p>
+      <router-link 
+        to="/products/add"
+        class="inline-flex items-center px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
+      >
+        Ajouter un produit
+      </router-link>
     </div>
     
-    <div v-else class="products-grid">
-      <div v-for="product in products" :key="product.id" class="product-card">
-        <img :src="product.image" :alt="product.title" class="product-image" />
-        <div class="product-info">
-          <h3>{{ product.title }}</h3>
-          <p class="product-price">{{ product.price }} €</p>
-          <p class="product-category">{{ product.category }}</p>
+    <!-- Grille des produits -->
+    <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div 
+        v-for="product in products" 
+        :key="product.id" 
+        class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200"
+      >
+        <!-- Image du produit -->
+        <div class="aspect-square bg-gray-50 p-4">
+          <img 
+            :src="product.image" 
+            :alt="product.title" 
+            class="w-full h-full object-contain"
+            @error="$event.target.src = 'https://via.placeholder.com/200x200?text=Image+non+disponible'"
+          />
+        </div>
+        
+        <!-- Informations du produit -->
+        <div class="p-4">
+          <h3 class="font-medium text-gray-900 text-sm mb-2 line-clamp-2 min-h-[2.5rem]">
+            {{ product.title }}
+          </h3>
+          
+          <div class="space-y-2 mb-4">
+            <p class="text-lg font-bold text-emerald-600">
+              {{ product.price.toFixed(2) }} €
+            </p>
+            <p class="text-sm text-gray-600 capitalize bg-gray-100 px-2 py-1 rounded-full inline-block">
+              {{ product.category }}
+            </p>
+          </div>
+          
+          <!-- Actions -->
+          <div class="flex gap-2">
+            <button 
+              @click="editProduct(product.id)"
+              class="flex-1 px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+              title="Modifier le produit"
+            >
+              Modifier
+            </button>
+            <button 
+              @click="deleteProduct(product)"
+              class="flex-1 px-3 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
+              title="Supprimer le produit"
+            >
+              Supprimer
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
-.products-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.header-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.add-product-button {
-  display: inline-block;
-  background-color: #42b983;
-  color: white;
-  padding: 10px 15px;
-  border-radius: 4px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-.add-product-button:hover {
-  background-color: #3aa876;
-}
-
-.loading, .error, .no-products {
-  text-align: center;
-  margin: 50px 0;
-  font-size: 18px;
-}
-
-.error {
-  color: red;
-}
-
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-  margin-top: 20px;
-}
-
-.product-card {
-  border: 1px solid #eee;
-  border-radius: 8px;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.product-image {
-  width: 100%;
-  height: 200px;
-  object-fit: contain;
-  background-color: #f9f9f9;
-  padding: 10px;
-}
-
-.product-info {
-  padding: 15px;
-}
-
-.product-info h3 {
-  margin-top: 0;
-  font-size: 16px;
-  height: 40px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-
-.product-price {
-  font-weight: bold;
-  font-size: 18px;
-  margin: 10px 0;
-}
-
-.product-category {
-  color: #666;
-  font-size: 14px;
-  text-transform: capitalize;
-}
-</style> 
+ 

@@ -34,6 +34,16 @@ const router = createRouter({
       name: 'home',
       component: { template: "<div>Page d'accueil</div>" },
     },
+    {
+      path: '/login',
+      name: 'login',
+      component: { template: "<div>Login</div>" },
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: { template: "<div>Register</div>" },
+    },
   ],
 })
 
@@ -52,6 +62,7 @@ describe('App.vue', () => {
         stubs: {
           TheHeader: true,
           RouterView: true,
+          Footer: true,
         },
       },
     })
@@ -66,6 +77,7 @@ describe('App.vue', () => {
         stubs: {
           TheHeader: true,
           RouterView: true,
+          Footer: true,
         },
       },
     })
@@ -75,17 +87,20 @@ describe('App.vue', () => {
     expect(mainDiv.classes()).toContain('bg-gray-50')
   })
 
-  it('devrait contenir la section main-content', () => {
+  it('devrait contenir la section main', () => {
     const wrapper = mount(App, {
       global: {
         plugins: [router, pinia],
         stubs: {
           TheHeader: true,
           RouterView: true,
+          Footer: true,
         },
       },
     })
 
-    expect(wrapper.find('.main-content').exists()).toBe(true)
+    const mainElement = wrapper.find('main')
+    expect(mainElement.exists()).toBe(true)
+    expect(mainElement.classes()).toContain('flex-1')
   })
 })
