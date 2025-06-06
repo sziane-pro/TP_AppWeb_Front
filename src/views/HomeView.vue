@@ -113,7 +113,7 @@ const testimonials = [
           </h1>
           
           <p class="text-xl sm:text-2xl text-gray-600 max-w-4xl mx-auto mb-12 leading-relaxed">
-            La plateforme tout-en-un qui simplifie la gestion de vos produits. 
+            La plateforme tout-en-un qui simplifie la gestion de vos produit. 
             Ajoutez, modifiez et organisez votre inventaire avec une interface moderne et intuitive.
           </p>
           
